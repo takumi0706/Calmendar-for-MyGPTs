@@ -1,0 +1,361 @@
+openapi: 3.1.0
+info:
+  title: Google Calendar Events API
+  version: v3
+servers:
+  - url: https://www.googleapis.com/calendar/v3
+paths:
+  /calendars/{calendarId}/events:
+    get:
+      summary: Retrieve events from a specified calendar
+      operationId: getEvents
+      parameters:
+        - name: calendarId
+          in: path
+          required: true
+          description: Calendar ID. Defaults to the primary calendar if not specified.
+          schema:
+            type: string
+            default: primary
+        - name: timeMin
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+            description: The minimum start time of the events to retrieve.
+        - name: timeMax
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+            description: The maximum end time of the events to retrieve.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventsResponse"
+    post:
+      summary: Insert a new event
+      description: Insert a new event into the specified calendar.
+      operationId: insertEvent
+      parameters:
+        - name: calendarId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                summary:
+                  type: string
+                  description: Summary or title of the event.
+                location:
+                  type: string
+                  description: The location where the event is scheduled.
+                description:
+                  type: string
+                  description: Additional notes or details for the event.
+                start:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                      description: The start date and time of the event in ISO 8601 format. Include the time zone offset (e.g., '+09:00').
+                  required:
+                    - dateTime
+                end:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                      description: The end date and time of the event in ISO 8601 format. Include the time zone offset (e.g., '+09:00').
+                  required:
+                    - dateTime
+                colorId:
+                  type: string
+                  description: A color ID that represents the color of the event.
+                reminders:
+                  type: object
+                  properties:
+                    useDefault:
+                      type: boolean
+                      description: Whether to use the calendar’s default reminders.
+                    overrides:
+                      type: array
+                      description: If `useDefault` is false, the list of reminders for the event.
+                      items:
+                        type: object
+                        properties:
+                          method:
+                            type: string
+                            description: The method by which the reminder is sent. Possible values are "email", "popup".
+                          minutes:
+                            type: integer
+                            description: Number of minutes before the event when the reminder is triggered.
+                      required:
+                        - method
+                        - minutes
+              required:
+                - summary
+                - start
+                - end
+      responses:
+        "200":
+          description: Event created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+  /calendars/{calendarId}/events/{eventId}:
+    put:
+      summary: Update an existing event
+      description: Updates the specified event in the calendar.
+      operationId: updateEvent
+      parameters:
+        - name: calendarId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the calendar where the event is located.
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the event to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                summary:
+                  type: string
+                  description: Summary or title of the event.
+                location:
+                  type: string
+                  description: The location where the event is scheduled.
+                description:
+                  type: string
+                  description: Additional notes or details for the event.
+                start:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                      description: The start date and time of the event in ISO 8601 format. Include the time zone offset (e.g., '+09:00').
+                  required:
+                    - dateTime
+                end:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                      description: The end date and time of the event in ISO 8601 format. Include the time zone offset (e.g., '+09:00').
+                  required:
+                    - dateTime
+                colorId:
+                  type: string
+                  description: A color ID that represents the color of the event.
+                reminders:
+                  type: object
+                  properties:
+                    useDefault:
+                      type: boolean
+                      description: Whether to use the calendar’s default reminders.
+                    overrides:
+                      type: array
+                      description: If `useDefault` is false, the list of reminders for the event.
+                      items:
+                        type: object
+                        properties:
+                          method:
+                            type: string
+                            description: The method by which the reminder is sent. Possible values are "email", "popup".
+                          minutes:
+                            type: integer
+                            description: Number of minutes before the event when the reminder is triggered.
+                      required:
+                        - method
+                        - minutes
+              required:
+                - summary
+                - start
+                - end
+      responses:
+        "200":
+          description: Event updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+    patch:
+      summary: Partially update an existing event
+      description: Partially updates the specified event in the calendar. Only the specified fields will be updated.
+      operationId: patchEvent
+      parameters:
+        - name: calendarId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the calendar where the event is located.
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the event to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                summary:
+                  type: string
+                  description: Summary or title of the event.
+                location:
+                  type: string
+                  description: The location where the event is scheduled.
+                description:
+                  type: string
+                  description: Additional notes or details for the event.
+                start:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                      description: The start date and time of the event in ISO 8601 format. Include the time zone offset (e.g., '+09:00').
+                end:
+                  type: object
+                  properties:
+                    dateTime:
+                      type: string
+                      format: date-time
+                      description: The end date and time of the event in ISO 8601 format. Include the time zone offset (e.g., '+09:00').
+                colorId:
+                  type: string
+                  description: A color ID that represents the color of the event.
+                reminders:
+                  type: object
+                  properties:
+                    useDefault:
+                      type: boolean
+                      description: Whether to use the calendar’s default reminders.
+                    overrides:
+                      type: array
+                      description: If `useDefault` is false, the list of reminders for the event.
+                      items:
+                        type: object
+                        properties:
+                          method:
+                            type: string
+                            description: The method by which the reminder is sent. Possible values are "email", "popup".
+                          minutes:
+                            type: integer
+                            description: Number of minutes before the event when the reminder is triggered.
+      responses:
+        "200":
+          description: Event updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+    delete:
+      summary: Delete an event
+      description: Deletes the specified event from the calendar.
+      operationId: deleteEvent
+      parameters:
+        - name: calendarId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the calendar from which the event will be deleted.
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the event to delete.
+      responses:
+        "204":
+          description: Event deleted successfully. No content is returned.
+components:
+  schemas:
+    EventsResponse:
+      type: object
+      properties:
+        kind:
+          type: string
+          description: The type of the API response, typically "calendar#events".
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Event"
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the event.
+        summary:
+          type: string
+          description: The summary or title of the event.
+        location:
+          type: string
+          description: The location where the event is scheduled.
+        description:
+          type: string
+          description: Additional notes or details for the event.
+        start:
+          type: string
+          format: date-time
+          description: The start date and time of the event in ISO 8601 format.
+        end:
+          type: string
+          format: date-time
+          description: The end date and time of the event in ISO 8601 format.
+        colorId:
+          type: string
+          description: A color ID that represents the color of the event.
+        reminders:
+          type: object
+          properties:
+            useDefault:
+              type: boolean
+              description: Whether to use the calendar’s default reminders.
+            overrides:
+              type: array
+              description: If `useDefault` is false, the list of reminders for the event.
+              items:
+                type: object
+                properties:
+                  method:
+                    type: string
+                    description: The method by which the reminder is sent. Possible values are "email", "popup".
+                  minutes:
+                    type: integer
+                    description: Number of minutes before the event when the reminder is triggered.
+                required:
+                  - method
+                  - minutes
+

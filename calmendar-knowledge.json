@@ -1,0 +1,323 @@
+{
+  "intents": [
+    {
+      "name": "get_events",
+      "description": "Retrieve events from a specified calendar based on date, time, and other filters.",
+      "patterns": [
+        "今週の予定を教えて",
+        "8月25日から8月30日までのイベントを表示して",
+        "カレンダーのイベントを確認して",
+        "次の金曜日の予定を教えて",
+        "来週のイベントは何がある？",
+        "今月の全ての予定を見せて",
+        "明日から3日間のイベントをリストして",
+        "今日の予定を一覧で教えて"
+      ],
+      "parameters": {
+        "calendarId": {
+          "type": "string",
+          "default": "primary"
+        },
+        "timeMin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "timeMax": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "apiEndpoint": "/calendars/{calendarId}/events",
+      "method": "GET"
+    },
+    {
+      "name": "create_event",
+      "description": "Insert a new event into the specified calendar.",
+      "patterns": [
+        "明日の14時から会議を追加して",
+        "新しいイベントを追加して",
+        "金曜日の10時に『チームミーティング』を設定して",
+        "来週の水曜日に『ランチミーティング』を追加して",
+        "今度の週末に『プロジェクト打ち合わせ』を入れて",
+        "次の月曜日の午前10時にイベントを作成して",
+        "明後日の16時から2時間のイベントを追加して",
+        "火曜日の午後にリマインダーを設定して"
+      ],
+      "parameters": {
+        "calendarId": {
+          "type": "string",
+          "default": "primary"
+        },
+        "summary": {
+          "type": "string",
+          "required": true
+        },
+        "location": {
+          "type": "string",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "start": {
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string",
+              "format": "date-time",
+              "required": true
+            }
+          }
+        },
+        "end": {
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string",
+              "format": "date-time",
+              "required": true
+            }
+          }
+        },
+        "colorId": {
+          "type": "string",
+          "required": false
+        },
+        "reminders": {
+          "type": "object",
+          "properties": {
+            "useDefault": {
+              "type": "boolean",
+              "default": true
+            },
+            "overrides": {
+              "type": "array",
+              "items": {
+                "method": "string",
+                "minutes": "integer"
+              }
+            }
+          }
+        }
+      },
+      "apiEndpoint": "/calendars/{calendarId}/events",
+      "method": "POST"
+    },
+    {
+      "name": "update_event",
+      "description": "Update an existing event in the calendar.",
+      "patterns": [
+        "今日の17時からの会議を18時に変更して",
+        "『プロジェクト進捗会議』の時間を変更して",
+        "会議のタイトルを『新プロジェクト打ち合わせ』に変更して",
+        "来週のミーティングの場所をオンラインに変更して",
+        "金曜日のイベントの終了時間を30分遅らせて",
+        "『ランチミーティング』の時間を15時に変更して",
+        "会議の詳細を追加して",
+        "イベントのタイトルだけ変更して"
+      ],
+      "parameters": {
+        "calendarId": {
+          "type": "string",
+          "required": true
+        },
+        "eventId": {
+          "type": "string",
+          "required": true
+        },
+        "summary": {
+          "type": "string",
+          "required": false
+        },
+        "location": {
+          "type": "string",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "start": {
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string",
+              "format": "date-time",
+              "required": true
+            }
+          }
+        },
+        "end": {
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string",
+              "format": "date-time",
+              "required": true
+            }
+          }
+        },
+        "colorId": {
+          "type": "string",
+          "required": false
+        },
+        "reminders": {
+          "type": "object",
+          "properties": {
+            "useDefault": {
+              "type": "boolean",
+              "default": true
+            },
+            "overrides": {
+              "type": "array",
+              "items": {
+                "method": "string",
+                "minutes": "integer"
+              }
+            }
+          }
+        }
+      },
+      "apiEndpoint": "/calendars/{calendarId}/events/{eventId}",
+      "method": "PUT"
+    },
+    {
+      "name": "delete_event",
+      "description": "Delete a specified event from the calendar.",
+      "patterns": [
+        "今日の13時からの会議を削除して",
+        "来週のイベントをキャンセルして削除して",
+        "指定したイベントを消して",
+        "今月末のイベントを削除して",
+        "明日予定されていた打ち合わせを削除して",
+        "このイベントをキャンセルして",
+        "誤って追加したイベントを消して",
+        "過去のイベントを削除して"
+      ],
+      "parameters": {
+        "calendarId": {
+          "type": "string",
+          "required": true
+        },
+        "eventId": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "apiEndpoint": "/calendars/{calendarId}/events/{eventId}",
+      "method": "DELETE"
+    },
+    {
+      "name": "partially_update_event",
+      "description": "Partially update an existing event in the calendar.",
+      "patterns": [
+        "このイベントの開始時間だけ変更して",
+        "場所を変更したい",
+        "リマインダーを設定し直して",
+        "イベントのタイトルを更新して",
+        "イベントの終了時間を延長して",
+        "このイベントの詳細だけ追加して",
+        "カラーを変えたい",
+        "このイベントのリマインダーを無効にして"
+      ],
+      "parameters": {
+        "calendarId": {
+          "type": "string",
+          "required": true
+        },
+        "eventId": {
+          "type": "string",
+          "required": true
+        },
+        "summary": {
+          "type": "string",
+          "required": false
+        },
+        "location": {
+          "type": "string",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "start": {
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "end": {
+          "type": "object",
+          "properties": {
+            "dateTime": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "colorId": {
+          "type": "string",
+          "required": false
+        },
+        "reminders": {
+          "type": "object",
+          "properties": {
+            "useDefault": {
+              "type": "boolean",
+              "default": true
+            },
+            "overrides": {
+              "type": "array",
+              "items": {
+                "method": "string",
+                "minutes": "integer"
+              }
+            }
+          }
+        }
+      },
+      "apiEndpoint": "/calendars/{calendarId}/events/{eventId}",
+      "method": "PATCH"
+    }
+  ],
+  "naturalLanguageProcessing": {
+    "dateTimeConversion": {
+      "examples": {
+        "今週": {
+          "timeMin": "current week's start date in ISO 8601",
+          "timeMax": "current week's end date in ISO 8601"
+        },
+        "明日": {
+          "timeMin": "tomorrow's start time in ISO 8601",
+          "timeMax": "tomorrow's end time in ISO 8601"
+        },
+        "次の金曜日": {
+          "timeMin": "next Friday's start time in ISO 8601",
+          "timeMax": "next Friday's end time in ISO 8601"
+        },
+        "来週": {
+          "timeMin": "next week's start date in ISO 8601",
+          "timeMax": "next week's end date in ISO 8601"
+        },
+        "今月": {
+          "timeMin": "current month's start date in ISO 8601",
+          "timeMax": "current month's end date in ISO 8601"
+        },
+        "今日": {
+          "timeMin": "today's start time in ISO 8601",
+          "timeMax": "today's end time in ISO 8601"
+        },
+        "週末": {
+          "timeMin": "this weekend's start time in ISO 8601",
+          "timeMax": "this weekend's end time in ISO 8601"
+        }
+      }
+    }
+  }
+}
+
