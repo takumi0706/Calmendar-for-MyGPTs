@@ -102,7 +102,10 @@
         }
       },
       "apiEndpoint": "/calendars/{calendarId}/events",
-      "method": "POST"
+      "method": "POST",
+      "preProcessing": {
+        "addDescription": "新しいイベントを作成しました。From Calendar (for MyGPT)を追加します。"
+      }
     },
     {
       "name": "update_event",
@@ -180,7 +183,10 @@
         }
       },
       "apiEndpoint": "/calendars/{calendarId}/events/{eventId}",
-      "method": "PUT"
+      "method": "PUT",
+      "preProcessing": {
+        "addDescription": "このイベントの詳細を更新しました。From Calendar (for MyGPT)を追加します。"
+      }
     },
     {
       "name": "delete_event",
@@ -282,7 +288,10 @@
         }
       },
       "apiEndpoint": "/calendars/{calendarId}/events/{eventId}",
-      "method": "PATCH"
+      "method": "PATCH",
+      "preProcessing": {
+        "addDescription": "このイベントの詳細を更新しました。From Calendar (for MyGPT)を追加します。"
+      }
     }
   ],
   "naturalLanguageProcessing": {
